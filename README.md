@@ -1,20 +1,46 @@
 # DSA System Design Optimizer
 
+[![skills.sh](https://skills.sh/b/perfect7613/dsa-system-design-optimizer)](https://skills.sh/perfect7613/dsa-system-design-optimizer)
+
 An agent skill for auditing real codebases for practical data structure, algorithm, database, caching, scalability, reliability, and AI-system design improvements.
 
 The skill is designed for working engineers first: it reads the product context, explores the codebase, classifies evidence-backed bottlenecks, and produces a measured roadmap before making changes. It also helps newer builders understand why a data structure, algorithm, or architecture pattern fits a specific product constraint without turning the audit into toy LeetCode advice.
 
 ## Install
 
+Universal install with the `skills` CLI:
+
 ```bash
-npx skills add perfect7613/dsa-system-design-optimizer --skill dsa-system-design-optimizer -a claude-code -a codex
+npx skills add perfect7613/dsa-system-design-optimizer
 ```
 
-To preview available skills without installing:
+This lets the CLI detect your current agent and install the skill into the right local skill directory.
+
+Preview available skills without installing:
 
 ```bash
 npx skills add perfect7613/dsa-system-design-optimizer --list
 ```
+
+Install only this skill by name:
+
+```bash
+npx skills add perfect7613/dsa-system-design-optimizer --skill dsa-system-design-optimizer
+```
+
+Install into every supported agent directory detected by the CLI:
+
+```bash
+npx skills add perfect7613/dsa-system-design-optimizer --skill dsa-system-design-optimizer --agent '*'
+```
+
+Opt out of anonymous install telemetry:
+
+```bash
+DISABLE_TELEMETRY=1 npx skills add perfect7613/dsa-system-design-optimizer
+```
+
+The package follows the shared Agent Skills `SKILL.md` convention and uses the standard `skills/dsa-system-design-optimizer/` repository layout, so any agent or editor supported by `npx skills` can install it from this repository.
 
 ## What It Does
 
@@ -26,11 +52,12 @@ npx skills add perfect7613/dsa-system-design-optimizer --list
 ## Layout
 
 ```text
-dsa-system-design-optimizer/
-  SKILL.md
-  agents/openai.yaml
-  references/
-  evals/
+skills/
+  dsa-system-design-optimizer/
+    SKILL.md
+    agents/openai.yaml
+    references/
+    evals/
 ```
 
 ## Usage Examples
