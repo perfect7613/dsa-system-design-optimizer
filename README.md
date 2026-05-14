@@ -7,10 +7,14 @@ The skill is designed for working engineers first: it reads the product context,
 ## Install
 
 ```bash
-npx skills add <owner>/dsa-system-design-optimizer --skill dsa-system-design-optimizer -a claude-code -a codex
+npx skills add perfect7613/dsa-system-design-optimizer --skill dsa-system-design-optimizer -a claude-code -a codex
 ```
 
-After this repository is published, replace `<owner>` with the GitHub account or organization name.
+To preview available skills without installing:
+
+```bash
+npx skills add perfect7613/dsa-system-design-optimizer --list
+```
 
 ## What It Does
 
