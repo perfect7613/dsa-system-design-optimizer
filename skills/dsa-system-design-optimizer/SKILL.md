@@ -54,7 +54,8 @@ Use both when a slow user workflow likely has architectural and code-level cause
 
 1. Explore read-only:
    - Entry points, service/module boundaries, data stores, queues, caches, infra, deployment topology, observability, background jobs, third-party dependencies.
-   - Scale smells: sync chains on user requests, DB bottlenecks, missing indexes, no pooling, no cache invalidation plan, shared mutable state, single points of failure, no rate limits, weak observability.
+   - Scale smells: sync chains on user requests, database bottlenecks, missing indexes, poor shard keys, unbounded scans, no pooling, no cache invalidation plan, shared mutable state, single points of failure, no rate limits, weak observability.
+   - Database internals smells: weak query plans, lock/deadlock pressure, bad isolation assumptions, replication lag, write/read amplification, poor partitioning, unsafe failover, missing restore drills.
    - AI-system smells: RAG without evals, no ACL filtering before retrieval, slow retrieval, missing reranking, unbounded agent loops, non-idempotent tools, weak prompt-injection defenses.
 2. Classify candidates using [references/system-design-patterns.md](references/system-design-patterns.md).
 3. Present roadmap using [references/audit-templates.md](references/audit-templates.md).
@@ -67,7 +68,7 @@ When subagents are available, use short, read-only prompts like these:
 
 - Hot path auditor: "Find likely hot paths and complexity smells. Report file/function, evidence, current complexity guess, and risk. Do not edit."
 - Data structure auditor: "Find places where arrays/lists, maps, sets, heaps, queues, indexes, or graph structures are missing or misused. Do not edit."
-- Data layer auditor: "Find query/data-access inefficiencies, N+1 patterns, missing indexes, connection pooling issues, and cache candidates. Do not edit."
+- Data layer auditor: "Find query/data-access inefficiencies, N+1 patterns, missing indexes, bad query plans, lock pressure, partitioning/sharding risks, replication/consistency risks, connection pooling issues, and cache candidates. Do not edit."
 - Reliability auditor: "Find sync dependency chains, retries/timeouts/circuit breaker gaps, rate-limit gaps, single points of failure, and observability gaps. Do not edit."
 - AI systems auditor: "If the product uses LLMs/RAG/agents, inspect retrieval, evals, tool safety, memory, budgets, and latency risks. Do not edit."
 

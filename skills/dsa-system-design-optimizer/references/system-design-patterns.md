@@ -43,6 +43,70 @@ Before proposing architecture changes, identify:
 | Semantic/vector search | Vector index/store | Use metadata filters before ANN search |
 | Single DB write ceiling reached | Sharding | Last resort after indexes, pooling, cache, replicas, partitioning |
 
+## Database Internals Audit
+
+Use this when the bottleneck is not just "add an index" but how data is stored, read, written, replicated, locked, and recovered.
+
+### Workload Shape
+
+| Question | Why it matters |
+|---|---|
+| Is the path point lookup, range scan, join-heavy, aggregate-heavy, write-heavy, or mixed? | The right index, storage layout, and cache strategy depends on access shape. |
+| Is the workload transactional or analytical? | Transactional paths optimize low-latency reads/writes; analytical paths optimize scans, aggregations, and compression. |
+| Are reads p50-fast but p99-slow? | Tail latency often points to lock waits, cache misses, bad plans, noisy neighbors, replication lag, or queueing. |
+| Is data naturally tenant-, time-, region-, or entity-scoped? | Good locality reduces cross-partition queries and makes failover/backfill safer. |
+
+### Index and Query Planning Checks
+
+| Signal | Pattern | Default guidance |
+|---|---|---|
+| Slow filter/sort/join on large relation | Access-path audit | Check selectivity, cardinality estimates, predicate order, join order, and whether the plan scans too much data. |
+| Query returns few rows but reads many | Covering/composite index candidate | Align index order with equality filters, range filters, sort, and projection. |
+| Index speeds reads but writes slow down | Index write-cost trade-off | Keep indexes tied to measured query patterns; remove unused or duplicate indexes. |
+| Partitioned data has inconsistent performance | Local/global index decision | Local indexes simplify partition operations; global indexes help cross-partition lookup but complicate writes and maintenance. |
+| Joins dominate runtime | Join strategy audit | Consider whether nested-loop, hash, or merge-style execution fits relation sizes, ordering, memory, and indexes. |
+| Cardinality estimates are wrong | Statistics/data distribution audit | Refresh or improve stats, account for skew, and validate with production-like distributions. |
+
+### Storage Engine and IO Checks
+
+| Signal | Pattern | Default guidance |
+|---|---|---|
+| Read-heavy range access | Tree-structured index/layout | Favor locality for ordered reads and predictable range scans. |
+| Write-heavy ingest with later compaction | Log-structured layout | Watch read amplification, compaction pressure, write amplification, and space amplification. |
+| Writes must survive crashes | Write-ahead logging / commit log | Verify fsync/durability settings, recovery behavior, and acknowledged-write semantics. |
+| Hot data repeatedly read from disk | Buffer/cache working-set audit | Compare working set to memory, cache hit rate, eviction behavior, and scan pollution. |
+| Bulk load or backfill is slow | Bulk ingestion path | Prefer ordered batches, disabled/rebuilt secondary structures where safe, and throttled backfills. |
+| Existence checks cause expensive reads | Probabilistic prefilter | Bloom-style filters can avoid unnecessary negative lookups when false positives are acceptable. |
+
+### Transactions, Isolation, and Concurrency
+
+| Signal | Pattern | Default guidance |
+|---|---|---|
+| Occasional duplicate, missing, or stale behavior | Isolation audit | Identify whether the workflow needs atomicity, read-your-writes, monotonic reads, or stronger serial behavior. |
+| Deadlocks or lock waits | Lock-order and transaction-scope audit | Keep transactions short, access rows in consistent order, and move noncritical work outside the transaction. |
+| Retry creates duplicate side effects | Idempotency boundary | Add idempotency keys or conflict-safe writes around retried transactions. |
+| Read path sees stale data after write | Consistency contract | Route critical reads to fresh data or make staleness visible and bounded. |
+
+### Replication, Partitioning, and Consensus
+
+| Signal | Pattern | Default guidance |
+|---|---|---|
+| Replica reads are stale | Replication lag budget | Define which workflows tolerate lag and which need read-your-writes. |
+| Failover is manual or untested | Failover drill | Test leader failure, replica promotion, client reconnect behavior, and data-loss window. |
+| Multi-region writes conflict | Conflict-resolution design | Choose single-writer, quorum, versioning, merge rules, or explicit compensation based on invariants. |
+| Shard/partition hotspots | Shard-key audit | Prefer high-cardinality, evenly distributed keys that preserve common query locality. |
+| Cross-shard queries dominate | Query-locality redesign | Revisit partition key, denormalized read models, or async aggregation. |
+| Strong coordination is required | Consensus boundary | Use consensus only for values that truly need linearizable agreement; keep the consensus surface small. |
+
+### Benchmarking and Measurement
+
+| Signal | Pattern | Default guidance |
+|---|---|---|
+| Average latency looks fine but users complain | Tail-latency benchmark | Track p50, p95, p99, max, and timeout/error rate separately. |
+| Benchmark does not match production | Representative workload | Use realistic cardinality, skew, data size, concurrency, cache warmth, and transaction mix. |
+| Change improves one metric but hurts another | RUM-style trade-off | Evaluate read cost, update/write cost, and memory/storage overhead together. |
+| Migration risk is unclear | Reversible rollout | Backfill in chunks, dual-read/dual-write only with verification, and define rollback before rollout. |
+
 ## Reliability Patterns
 
 | Signal | Pattern | Default guidance |
