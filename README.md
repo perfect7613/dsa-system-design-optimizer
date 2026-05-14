@@ -4,7 +4,7 @@
 
 An agent skill for auditing real codebases for practical data structure, algorithm, database, caching, scalability, reliability, and AI-system design improvements.
 
-The skill is designed for working engineers first: it reads the product context, explores the codebase, classifies evidence-backed bottlenecks, and produces a measured roadmap before making changes. It also helps newer builders understand why a data structure, algorithm, or architecture pattern fits a specific product constraint without turning the audit into toy LeetCode advice.
+The skill is designed for working engineers first: it reads the product context, explores the codebase, classifies evidence-backed bottlenecks, and produces a measured roadmap before making changes. It can also explain why a data structure, algorithm, or architecture pattern fits a specific product constraint while keeping recommendations grounded in production trade-offs.
 
 ## Install
 
