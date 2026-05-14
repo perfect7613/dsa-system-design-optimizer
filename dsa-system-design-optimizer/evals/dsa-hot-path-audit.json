@@ -1,0 +1,10 @@
+{
+  "skills": ["dsa-system-design-optimizer"],
+  "query": "Audit this TypeScript API for code-level performance issues. Find hot paths where the right data structure or algorithm would reduce time or space complexity. Do not edit code yet.",
+  "expected_behavior": [
+    "Reads project docs and entry points before making recommendations",
+    "Finds evidence-backed complexity smells such as repeated scans, repeated sorts, N+1 queries, or missing maps/sets",
+    "Reports current and proposed complexity with trade-offs",
+    "Asks before implementing any change"
+  ]
+}

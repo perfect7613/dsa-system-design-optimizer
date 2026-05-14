@@ -1,0 +1,10 @@
+{
+  "skills": ["dsa-system-design-optimizer"],
+  "query": "Audit this RAG and agent system for production readiness, including retrieval quality, latency, tool safety, and evaluation gaps.",
+  "expected_behavior": [
+    "Inspects retrieval, chunking, metadata filtering, reranking, evals, and latency paths",
+    "Flags access-control, prompt-injection, unbounded loop, and non-idempotent tool risks",
+    "Suggests practical measurement and guardrail improvements before large rewrites",
+    "Separates code-level optimizations from architecture-level design changes"
+  ]
+}

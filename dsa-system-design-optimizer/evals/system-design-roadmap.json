@@ -1,0 +1,10 @@
+{
+  "skills": ["dsa-system-design-optimizer"],
+  "query": "Review this backend architecture for scalability and reliability. Create a prioritized roadmap for handling 10x traffic over the next year.",
+  "expected_behavior": [
+    "Extracts scale, read/write, data, and reliability assumptions from docs or asks for missing facts",
+    "Classifies findings with system design patterns such as caching, queues, pooling, replicas, rate limits, observability, or resilience",
+    "Ranks quick wins separately from structural or strategic changes",
+    "Includes rollout, rollback, trade-offs, and metrics for each major recommendation"
+  ]
+}

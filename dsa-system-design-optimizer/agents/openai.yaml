@@ -1,0 +1,7 @@
+interface:
+  display_name: "DSA System Design Optimizer"
+  short_description: "Find code and architecture bottlenecks"
+  default_prompt: "Use $dsa-system-design-optimizer to audit this codebase for practical DSA and system design improvements."
+
+policy:
+  allow_implicit_invocation: true
