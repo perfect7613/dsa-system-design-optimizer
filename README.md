@@ -56,7 +56,6 @@ The package follows the shared Agent Skills `SKILL.md` convention and uses the s
 skills/
   dsa-system-design-optimizer/
     SKILL.md
-    agents/openai.yaml
     references/
     evals/
 ```
