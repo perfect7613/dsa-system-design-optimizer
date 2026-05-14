@@ -20,6 +20,7 @@ Serve experienced engineers with concise evidence and trade-offs first. When the
 - If the host supports subagents, delegate independent read-only audits in parallel. If not, inspect locally.
 - For destructive, irreversible, or high-blast-radius changes, produce a design/spec first.
 - Do not shame simple code. A clear O(n^2) solution may be correct for bounded cold paths.
+- Stay language- and vendor-neutral by default. Name specific languages, frameworks, databases, clouds, or vendors only when discovered in the codebase or requested by the user.
 
 ## First Pass
 
@@ -66,7 +67,7 @@ When subagents are available, use short, read-only prompts like these:
 
 - Hot path auditor: "Find likely hot paths and complexity smells. Report file/function, evidence, current complexity guess, and risk. Do not edit."
 - Data structure auditor: "Find places where arrays/lists, maps, sets, heaps, queues, indexes, or graph structures are missing or misused. Do not edit."
-- Data layer auditor: "Find ORM/query inefficiencies, N+1 patterns, missing indexes, connection pooling issues, and cache candidates. Do not edit."
+- Data layer auditor: "Find query/data-access inefficiencies, N+1 patterns, missing indexes, connection pooling issues, and cache candidates. Do not edit."
 - Reliability auditor: "Find sync dependency chains, retries/timeouts/circuit breaker gaps, rate-limit gaps, single points of failure, and observability gaps. Do not edit."
 - AI systems auditor: "If the product uses LLMs/RAG/agents, inspect retrieval, evals, tool safety, memory, budgets, and latency risks. Do not edit."
 
@@ -88,7 +89,7 @@ If evidence is weak, label it as a hypothesis and explain how to validate it.
 ## Reference Guide
 
 - DSA pattern selection: [references/dsa-patterns.md](references/dsa-patterns.md)
-- Complexity and language gotchas: [references/dsa-complexity.md](references/dsa-complexity.md)
+- Complexity and hidden costs: [references/dsa-complexity.md](references/dsa-complexity.md)
 - System design patterns: [references/system-design-patterns.md](references/system-design-patterns.md)
 - Grilling questions: [references/grilling.md](references/grilling.md)
 - Report templates: [references/audit-templates.md](references/audit-templates.md)

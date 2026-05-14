@@ -2,6 +2,8 @@
 
 Use this file when classifying architecture, database, infrastructure, reliability, and AI-system findings. Recommend the lowest-complexity pattern that meets the product's current and near-future requirements.
 
+Stay vendor-neutral. Name concrete products only when the codebase already uses them, the user asks for product selection, or a comparison is explicitly needed.
+
 ## Scale Discovery
 
 Before proposing architecture changes, identify:
@@ -17,7 +19,7 @@ Before proposing architecture changes, identify:
 
 | Signal | Pattern | Default guidance |
 |---|---|---|
-| App servers hold session state | Stateless app tier | Move state to Redis/DB; put app behind load balancer |
+| App servers hold session state | Stateless app tier | Move state to a shared session store; put app instances behind traffic distribution |
 | Slow user request waits for noncritical work | Async queue/workers | Queue emails, media, analytics, webhooks, reports |
 | DB read pressure | Cache-aside, read replica | Cache hot reads first, add replica when read load persists |
 | Same expensive value recomputed | L1/L2 cache | Define invalidation before adding cache |
@@ -31,14 +33,14 @@ Before proposing architecture changes, identify:
 
 | Signal | Pattern | Default guidance |
 |---|---|---|
-| Relational data, transactions | Postgres/MySQL | Start here for most products |
+| Relational data, transactions | Relational database | Start here for most products |
 | Missing filter/join index | Indexing | Add measured, query-backed indexes |
-| High connection overhead | Connection pooling | PgBouncer or ORM pool tuning |
+| High connection overhead | Connection pooling | Tune client/server pooling and connection lifetimes |
 | N+1 query | Batch/eager load | Query related records once |
 | Offset pagination slow | Keyset pagination | Use stable cursor over indexed column |
 | Read and analytics compete | OLTP/OLAP split or CQRS | Add read model/warehouse when measured |
 | Time-series growth | Partitioning/time-series DB | Partition before sharding |
-| Semantic/vector search | pgvector first, managed vector DB later | Use metadata filters before ANN search |
+| Semantic/vector search | Vector index/store | Use metadata filters before ANN search |
 | Single DB write ceiling reached | Sharding | Last resort after indexes, pooling, cache, replicas, partitioning |
 
 ## Reliability Patterns

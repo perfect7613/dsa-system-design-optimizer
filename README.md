@@ -48,6 +48,7 @@ The package follows the shared Agent Skills `SKILL.md` convention and uses the s
 - Finds system design opportunities: database indexing, caching, queues, pooling, rate limits, observability, retries, circuit breakers, scaling paths, and rollout plans.
 - Reviews AI systems: RAG retrieval, reranking, ACL filtering, evals, agent loops, tool idempotency, LLM serving latency, and cost controls.
 - Produces audit-first reports with impact, risk, effort, complexity estimates, trade-offs, and verification plans.
+- Stays language- and vendor-neutral unless the target codebase or user request calls for specific technologies.
 
 ## Layout
 
